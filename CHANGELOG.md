@@ -17,7 +17,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 *
 
-# [4.12.3]() (2024-12-27)
+# [4.12.3](https://github.com/hyperledger-web3j/web3j-openapi/releases/tag/v4.12.3) (2024-12-27)
 
 ### Bug Fixes
 
