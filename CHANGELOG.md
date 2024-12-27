@@ -3,7 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [4.12.3]() (Upcoming)
+# [4.12.4]() (Upcoming)
+
+### Bug Fixes
+
+*
+
+### Features
+
+* Bump SNAPSHOT version to 4.12.4 [#117](https://github.com/hyperledger/web3j-openapi/pull/117)
+
+### BREAKING CHANGES
+
+*
+
+# [4.12.3]() (2024-12-27)
 
 ### Bug Fixes
 
