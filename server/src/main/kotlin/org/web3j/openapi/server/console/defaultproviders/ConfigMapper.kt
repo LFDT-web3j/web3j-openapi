@@ -18,20 +18,29 @@ import picocli.CommandLine
 internal class ConfigMapper(
     private val consoleConfiguration: ConsoleConfiguration?,
 ) {
-
     fun value(param: CommandLine.Model.ArgSpec): String? {
         val stringParam = param.toPropertyName()
         return when {
             stringParam.contains("config.file") -> consoleConfiguration?.configFileOptions?.configFile?.absolutePath
             stringParam.contains("private.key") -> consoleConfiguration?.credentialsOptions?.privateKey
-            stringParam.contains("wallet.path") -> consoleConfiguration?.credentialsOptions?.walletOptions?.walletFile?.absolutePath
+            stringParam.contains("wallet.path") ->
+                consoleConfiguration
+                    ?.credentialsOptions
+                    ?.walletOptions
+                    ?.walletFile
+                    ?.absolutePath
             stringParam.contains("wallet.password") -> consoleConfiguration?.credentialsOptions?.walletOptions?.walletPassword
             stringParam.contains("endpoint") -> consoleConfiguration?.networkOptions?.endpoint?.toString()
             stringParam.contains("projectName") -> consoleConfiguration?.projectOptions?.projectName
             stringParam.contains("contextPath") -> consoleConfiguration?.projectOptions?.contextPath
             stringParam.contains("host") -> consoleConfiguration?.serverOptions?.host?.hostAddress
             stringParam.contains("port") -> consoleConfiguration?.serverOptions?.port?.toString()
-            stringParam.contains("contract.addresses") -> consoleConfiguration?.contractAddresses?.map { entry -> "${entry.key}=${entry.value}" }?.joinToString(",")
+            stringParam.contains("contract.addresses") ->
+                consoleConfiguration
+                    ?.contractAddresses
+                    ?.map { entry ->
+                        "${entry.key}=${entry.value}"
+                    }?.joinToString(",")
             else -> null // If you add other fields to here, make sure to add them to the Env variables too
         }
     }
@@ -42,10 +51,9 @@ internal class ConfigMapper(
      * depending on the config file type.
      * for non composed names: <code>--port</code> becomes <code>port</code>
      */
-    private fun CommandLine.Model.ArgSpec.toPropertyName(): String {
-        return (this as CommandLine.Model.OptionSpec)
+    private fun CommandLine.Model.ArgSpec.toPropertyName(): String =
+        (this as CommandLine.Model.OptionSpec)
             .longestName()
             .removePrefix("--")
             .replace("-", ".")
-    }
 }

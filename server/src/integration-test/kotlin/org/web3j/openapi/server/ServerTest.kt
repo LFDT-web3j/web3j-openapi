@@ -45,7 +45,6 @@ import java.util.function.Consumer
 @EVMTest(type = NodeType.BESU)
 @TestInstance(Lifecycle.PER_CLASS)
 class ServerTest : JerseyTest() {
-
     private lateinit var contract: HumanStandardTokenResource
 
     private val client: TestProjectApi by lazy {
@@ -69,16 +68,18 @@ class ServerTest : JerseyTest() {
     @BeforeAll
     override fun setUp() {
         super.setUp()
-        contract = client.contracts.humanStandardToken.deploy(
-            HumanStandardTokenDeployParameters(
-                BigInteger.TEN,
-                "Test",
-                BigInteger.ZERO,
-                "TEST",
-            ),
-        ).let {
-            client.contracts.humanStandardToken.load(it.contractAddress)
-        }
+        contract =
+            client.contracts.humanStandardToken
+                .deploy(
+                    HumanStandardTokenDeployParameters(
+                        BigInteger.TEN,
+                        "Test",
+                        BigInteger.ZERO,
+                        "TEST",
+                    ),
+                ).let {
+                    client.contracts.humanStandardToken.load(it.contractAddress)
+                }
     }
 
     @AfterAll

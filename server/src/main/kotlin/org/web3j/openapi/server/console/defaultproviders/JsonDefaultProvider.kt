@@ -20,7 +20,6 @@ import java.io.File
 internal class JsonDefaultProvider(
     configFile: File?,
 ) : CommandLine.IDefaultValueProvider {
-
     private val consoleConfiguration: ConsoleConfiguration? = ObjectMapper().readValue(configFile, ConsoleConfiguration::class.java)
 
     private val consoleConfigMapper = ConfigMapper(consoleConfiguration)

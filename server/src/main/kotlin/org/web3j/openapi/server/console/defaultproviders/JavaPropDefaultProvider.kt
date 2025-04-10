@@ -20,9 +20,9 @@ import java.io.File
 internal class JavaPropDefaultProvider(
     configFile: File?,
 ) : CommandLine.IDefaultValueProvider {
-
-    private val consoleConfiguration: ConsoleConfiguration? = JavaPropsMapper()
-        .readValue(configFile, ConsoleConfiguration::class.java)
+    private val consoleConfiguration: ConsoleConfiguration? =
+        JavaPropsMapper()
+            .readValue(configFile, ConsoleConfiguration::class.java)
 
     private val consoleConfigMapper = ConfigMapper(consoleConfiguration)
 

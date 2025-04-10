@@ -26,7 +26,9 @@ import org.web3j.openapi.server.config.OpenApiResourceConfig
 import org.web3j.openapi.server.config.OpenApiServerConfig
 import java.net.URI
 
-class OpenApiServer(private val serverConfig: OpenApiServerConfig) : Server() {
+class OpenApiServer(
+    private val serverConfig: OpenApiServerConfig,
+) : Server() {
     init {
         addConnector(
             ServerConnector(this).apply {
@@ -51,9 +53,10 @@ class OpenApiServer(private val serverConfig: OpenApiServerConfig) : Server() {
     private fun configureSwaggerUi() {
         getResource("static/swagger-ui/index.html")?.also {
             val swaggerResourceUri = URI.create(it.toURI().toASCIIString().substringBefore("swagger-ui/"))
-            val swaggerServletHolder = ServletHolder("default", DefaultServlet::class.java).apply {
-                setInitParameter("dirAllowed", "true")
-            }
+            val swaggerServletHolder =
+                ServletHolder("default", DefaultServlet::class.java).apply {
+                    setInitParameter("dirAllowed", "true")
+                }
             (handler as ServletContextHandler).apply {
                 baseResource = Resource.newResource(swaggerResourceUri)
                 addServlet(swaggerServletHolder, "/swagger-ui/*")

@@ -26,11 +26,14 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.Paths
 
-internal class ServerGenerator(configuration: GeneratorConfiguration) : AbstractGenerator(configuration) {
-
+internal class ServerGenerator(
+    configuration: GeneratorConfiguration,
+) : AbstractGenerator(configuration) {
     private val serverImports: List<Import> by lazy {
         configuration.contracts.map {
-            Import("import ${configuration.packageName}.server.${it.contractDetails.lowerCaseContractName}.${it.contractDetails.capitalizedContractName}")
+            Import(
+                "import ${configuration.packageName}.server.${it.contractDetails.lowerCaseContractName}.${it.contractDetails.capitalizedContractName}",
+            )
         }
     }
 
@@ -58,10 +61,12 @@ internal class ServerGenerator(configuration: GeneratorConfiguration) : Abstract
             logger.debug("Generating ${it.contractDetails.capitalizedContractName} server folders and files")
             LifecycleImplGenerator(
                 packageName = configuration.packageName,
-                folderPath = Paths.get(
-                    folderPath,
-                    it.contractDetails.lowerCaseContractName,
-                ).toString(),
+                folderPath =
+                    Paths
+                        .get(
+                            folderPath,
+                            it.contractDetails.lowerCaseContractName,
+                        ).toString(),
                 contractDetails = it.contractDetails,
             ).generate()
 
@@ -75,10 +80,12 @@ internal class ServerGenerator(configuration: GeneratorConfiguration) : Abstract
             EventsResourceImplGenerator(
                 packageName = configuration.packageName,
                 contractName = it.contractDetails.contractName,
-                folderPath = Paths.get(
-                    folderPath,
-                    it.contractDetails.lowerCaseContractName,
-                ).toString(),
+                folderPath =
+                    Paths
+                        .get(
+                            folderPath,
+                            it.contractDetails.lowerCaseContractName,
+                        ).toString(),
                 abiDefinitions = it.contractDetails.abiDefinitions,
             ).generate()
 
@@ -110,20 +117,23 @@ internal class ServerGenerator(configuration: GeneratorConfiguration) : Abstract
 //        )
 
         // FIXME Copies SPI resource in main
-        val spiFolder = File(
-            Paths.get(
-                folderPath.substringBefore("kotlin"),
-                "resources",
-                "META-INF",
-                "services",
-            ).toString(),
-        ).apply { mkdirs() }
+        val spiFolder =
+            File(
+                Paths
+                    .get(
+                        folderPath.substringBefore("kotlin"),
+                        "resources",
+                        "META-INF",
+                        "services",
+                    ).toString(),
+            ).apply { mkdirs() }
         TemplateUtils.generateFromTemplate(
             context = context,
             outputDir = spiFolder.absolutePath,
-            template = TemplateUtils.mustacheTemplate(
-                "server/src/main/resources/META-INF/services/org.web3j.openapi.server.spi.OpenApiResourceProvider.mustache",
-            ),
+            template =
+                TemplateUtils.mustacheTemplate(
+                    "server/src/main/resources/META-INF/services/org.web3j.openapi.server.spi.OpenApiResourceProvider.mustache",
+                ),
             name = "org.web3j.openapi.server.spi.OpenApiResourceProvider",
         )
     }

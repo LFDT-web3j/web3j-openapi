@@ -20,9 +20,12 @@ import org.web3j.openapi.core.SubResource
 abstract class SubResourceImpl(
     private val uriInfo: ExtendedUriInfo,
 ) : SubResource {
-
     override fun findAll(): List<String> {
         val resourceClass = (uriInfo as UriRoutingContext).resourceClass
-        return Resource.builder(resourceClass).build().childResources.map { it.path }
+        return Resource
+            .builder(resourceClass)
+            .build()
+            .childResources
+            .map { it.path }
     }
 }

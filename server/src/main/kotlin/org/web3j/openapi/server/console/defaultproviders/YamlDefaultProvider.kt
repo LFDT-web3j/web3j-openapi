@@ -21,8 +21,10 @@ import java.io.File
 internal class YamlDefaultProvider(
     configFile: File?,
 ) : CommandLine.IDefaultValueProvider {
-
-    private val consoleConfiguration: ConsoleConfiguration? = ObjectMapper(YAMLFactory()).readValue(configFile, ConsoleConfiguration::class.java)
+    private val consoleConfiguration: ConsoleConfiguration? =
+        ObjectMapper(
+            YAMLFactory(),
+        ).readValue(configFile, ConsoleConfiguration::class.java)
 
     private val consoleConfigMapper = ConfigMapper(consoleConfiguration)
 

@@ -21,10 +21,12 @@ data class ContractDetails(
     var abiDefinitions: List<AbiDefinition>,
 ) {
     init {
-        abiDefinitions.filter { it.isPayable }
+        abiDefinitions
+            .filter { it.isPayable }
             .forEach { it.inputs.add(AbiDefinition.NamedType("weiValue", "uint")) }
-        abiDefinitions = handleDuplicateNames(handleDuplicateNames(abiDefinitions, "event"), "function")
-            .apply { forEach { abiDefinition -> abiDefinition.inputs = handleDuplicateInputNames(abiDefinition.inputs) } }
+        abiDefinitions =
+            handleDuplicateNames(handleDuplicateNames(abiDefinitions, "event"), "function")
+                .apply { forEach { abiDefinition -> abiDefinition.inputs = handleDuplicateInputNames(abiDefinition.inputs) } }
     }
 
     val lowerCaseContractName: String
@@ -37,10 +39,11 @@ data class ContractDetails(
         get() = contractName.decapitalize()
 
     val deployParameters: String
-        get() = abiDefinitions
-            .filter { it.type == "constructor" }
-            .firstOrNull { it.inputs.isNotEmpty() }
-            ?.run {
-                "(parameters: ${capitalizedContractName}DeployParameters)"
-            } ?: "()"
+        get() =
+            abiDefinitions
+                .filter { it.type == "constructor" }
+                .firstOrNull { it.inputs.isNotEmpty() }
+                ?.run {
+                    "(parameters: ${capitalizedContractName}DeployParameters)"
+                } ?: "()"
 }

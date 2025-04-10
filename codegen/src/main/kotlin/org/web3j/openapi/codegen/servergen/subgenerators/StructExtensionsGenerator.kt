@@ -27,7 +27,6 @@ class StructExtensionsGenerator(
     private val resourcesDefinition: List<AbiDefinition>,
     private val folderPath: String,
 ) {
-
     fun generate() {
         val structs = extractStructs(resourcesDefinition)
         if (!structs.isNullOrEmpty())generateExtensions(structs).writeTo(File(folderPath))
@@ -40,31 +39,36 @@ class StructExtensionsGenerator(
     }
 
     private fun generateExtensions(structs: List<AbiDefinition.NamedType?>): FileSpec {
-        val extensionsFile = FileSpec.builder(
-            "$packageName.server.${contractName.lowercase()}",
-            "${contractName.capitalize()}Extensions",
-        )
+        val extensionsFile =
+            FileSpec.builder(
+                "$packageName.server.${contractName.lowercase()}",
+                "${contractName.capitalize()}Extensions",
+            )
 
         structs.forEach { structDefinition ->
             val structName = structDefinition!!.internalType.structName
 
-            val contractClass = ClassName(
-                "$packageName.wrappers.${contractName.capitalize()}",
-                structName,
-            )
+            val contractClass =
+                ClassName(
+                    "$packageName.wrappers.${contractName.capitalize()}",
+                    structName,
+                )
 
-            val modelClass = ClassName(
-                "$packageName.core.${contractName.lowercase()}.model",
-                "${structName}StructModel",
-            )
+            val modelClass =
+                ClassName(
+                    "$packageName.core.${contractName.lowercase()}.model",
+                    "${structName}StructModel",
+                )
 
             val code = "return ${modelClass.simpleName}(${extensionDefinitionParameters(structDefinition)})"
 
-            val extensionFunction = FunSpec.builder("toModel")
-                .receiver(contractClass)
-                .returns(modelClass)
-                .addCode(code)
-                .build()
+            val extensionFunction =
+                FunSpec
+                    .builder("toModel")
+                    .receiver(contractClass)
+                    .returns(modelClass)
+                    .addCode(code)
+                    .build()
             extensionsFile.addFunction(extensionFunction)
         }
 
@@ -72,13 +76,12 @@ class StructExtensionsGenerator(
             .build()
     }
 
-    private fun extensionDefinitionParameters(structDefinition: AbiDefinition.NamedType): String {
-        return structDefinition.components.joinToString(",") { structField ->
+    private fun extensionDefinitionParameters(structDefinition: AbiDefinition.NamedType): String =
+        structDefinition.components.joinToString(",") { structField ->
             if (structField.components.isNullOrEmpty()) {
                 structField.name
             } else {
                 "${structField.name}.toModel()"
             }
         }
-    }
 }

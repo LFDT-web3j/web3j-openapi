@@ -12,4 +12,6 @@
  */
 package org.web3j.openapi.codegen.common
 
-data class Import(val import: String)
+data class Import(
+    val import: String,
+)

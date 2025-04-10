@@ -19,44 +19,53 @@ import java.io.File
 import java.nio.file.Paths
 
 class GeneratorUtilsTest {
-
-    private val contractsFolder = Paths.get(
-        "src",
-        "test",
-        "resources",
-        "contracts",
-    ).toFile()
+    private val contractsFolder =
+        Paths
+            .get(
+                "src",
+                "test",
+                "resources",
+                "contracts",
+            ).toFile()
 
     @Test
     fun `function names duplicates handling`() {
-        val duplicatesAbi = File(
-            Paths.get(
-                contractsFolder.absolutePath,
-                "duplicate",
-                "build",
-                "DuplicateField.abi",
-            ).toString(),
-        )
+        val duplicatesAbi =
+            File(
+                Paths
+                    .get(
+                        contractsFolder.absolutePath,
+                        "duplicate",
+                        "build",
+                        "DuplicateField.abi",
+                    ).toString(),
+            )
 
         val contractAbiDefinition = loadContractDefinition(duplicatesAbi)
         val sanitizedAbiDefinitions = handleDuplicateNames(contractAbiDefinition, "function")
 
         assert(
-            sanitizedAbiDefinitions.filter { it.type == "function" }.map { it.name.decapitalize() }.toSet().size
+            sanitizedAbiDefinitions
+                .filter { it.type == "function" }
+                .map { it.name.decapitalize() }
+                .toSet()
+                .size
                 == loadContractDefinition(duplicatesAbi).filter { it.type == "function" }.size,
         )
     }
 
     @Test
     fun `inputs duplicates handling`() {
-        val duplicatesAbi = File(
-            Paths.get(
-                contractsFolder.absolutePath,
-                "duplicate",
-                "build",
-                "DuplicateField.abi",
-            ).toString(),
-        )
+        val duplicatesAbi =
+            File(
+                Paths
+                    .get(
+                        contractsFolder.absolutePath,
+                        "duplicate",
+                        "build",
+                        "DuplicateField.abi",
+                    ).toString(),
+            )
 
         val inputWithDuplicates = loadContractDefinition(duplicatesAbi).filter { it.name == "Sum" }.map { it.inputs }.first()
         val sanitizedInputs = handleDuplicateInputNames(inputWithDuplicates)

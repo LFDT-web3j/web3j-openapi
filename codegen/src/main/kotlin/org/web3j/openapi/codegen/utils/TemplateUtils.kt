@@ -21,14 +21,18 @@ import java.io.OutputStreamWriter
 import java.io.PrintWriter
 
 internal object TemplateUtils {
-    fun mustacheTemplate(filePath: String): Template {
-        return javaClass.classLoader.getResourceAsStream(filePath)?.run {
+    fun mustacheTemplate(filePath: String): Template =
+        javaClass.classLoader.getResourceAsStream(filePath)?.run {
             Mustache.compiler().compile(InputStreamReader(this))
         } ?: throw IllegalStateException("Template not found: $filePath")
-    }
 
-    fun generateFromTemplate(context: Map<String, Any>, outputDir: String, name: String, template: Template): File {
-        return File(outputDir)
+    fun generateFromTemplate(
+        context: Map<String, Any>,
+        outputDir: String,
+        name: String,
+        template: Template,
+    ): File =
+        File(outputDir)
             .resolve(name)
             .apply {
                 mustacheWriter(context, template, absolutePath)
@@ -36,9 +40,12 @@ internal object TemplateUtils {
                     CopyUtils.kotlinFormat(this)
                 }
             }
-    }
 
-    private fun mustacheWriter(context: Map<String, Any>, template: Template, filePath: String) {
+    private fun mustacheWriter(
+        context: Map<String, Any>,
+        template: Template,
+        filePath: String,
+    ) {
         PrintWriter(OutputStreamWriter(FileOutputStream(filePath))).use {
             template.execute(context, it)
             it.flush()

@@ -21,10 +21,12 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 internal object CopyUtils : KLogging() {
-
     private val ruleProvider = StandardRuleSetProvider().getRuleProviders()
 
-    fun copyResource(name: String, outputDir: File) {
+    fun copyResource(
+        name: String,
+        outputDir: File,
+    ) {
         Files.copy(
             javaClass.classLoader.getResourceAsStream(name)!!,
             outputDir.resolve(name).toPath(),
@@ -32,14 +34,20 @@ internal object CopyUtils : KLogging() {
         )
     }
 
-    fun createTree(outputDir: String, packageDir: String, module: String = ""): String {
-        val folder = File(
-            Paths.get(
-                outputDir,
-                packageDir,
-                module,
-            ).toString(),
-        ).apply { mkdirs() }
+    fun createTree(
+        outputDir: String,
+        packageDir: String,
+        module: String = "",
+    ): String {
+        val folder =
+            File(
+                Paths
+                    .get(
+                        outputDir,
+                        packageDir,
+                        module,
+                    ).toString(),
+            ).apply { mkdirs() }
         return folder.absolutePath
     }
 
@@ -47,16 +55,17 @@ internal object CopyUtils : KLogging() {
      * Format a given Kotlin file using KtLint.
      */
     fun kotlinFormat(file: File) {
-        val formattedText = KtLint.format(
-            KtLint.ExperimentalParams(
-                text = file.readText(),
-                ruleProviders = ruleProvider,
-                userData = mapOf(),
-                cb = { _, _ -> },
-                script = false,
-                debug = false,
-            ),
-        )
+        val formattedText =
+            KtLint.format(
+                KtLint.ExperimentalParams(
+                    text = file.readText(),
+                    ruleProviders = ruleProvider,
+                    userData = mapOf(),
+                    cb = { _, _ -> },
+                    script = false,
+                    debug = false,
+                ),
+            )
         file.writeText(formattedText)
     }
 }

@@ -22,26 +22,28 @@ import java.io.File
 import java.nio.file.Paths
 
 class GenerationTest {
-
     @TempDir
     lateinit var tempFolder: File
 
     @Test
     fun `generate project Gradle tasks`() {
-        val contractsFolder = Paths.get(
-            "src",
-            "test",
-            "resources",
-            "contracts",
-        ).toFile()
+        val contractsFolder =
+            Paths
+                .get(
+                    "src",
+                    "test",
+                    "resources",
+                    "contracts",
+                ).toFile()
 
-        val generatorConfiguration = GeneratorConfiguration(
-            projectName = "testProject",
-            packageName = "com.test",
-            outputDir = tempFolder.canonicalPath,
-            contracts = loadContractConfigurations(listOf(contractsFolder)),
-            contextPath = "test",
-        )
+        val generatorConfiguration =
+            GeneratorConfiguration(
+                projectName = "testProject",
+                packageName = "com.test",
+                outputDir = tempFolder.canonicalPath,
+                contracts = loadContractConfigurations(listOf(contractsFolder)),
+                contextPath = "test",
+            )
         assertDoesNotThrow {
             OpenApiGenerator(generatorConfiguration).generate()
         }

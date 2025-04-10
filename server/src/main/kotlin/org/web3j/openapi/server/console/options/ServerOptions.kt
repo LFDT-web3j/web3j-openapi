@@ -16,7 +16,6 @@ import picocli.CommandLine.Option
 import java.net.InetAddress
 
 class ServerOptions {
-
     @Option(
         names = ["--host"],
         description = ["specify the host name"],

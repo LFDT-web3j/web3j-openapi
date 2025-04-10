@@ -24,14 +24,14 @@ import org.web3j.protocol.core.methods.response.AbiDefinition
 import org.web3j.protocol.core.methods.response.AbiDefinition.NamedType
 
 class SolidityUtilsTest {
-
     @Test
     fun `toNativeArrayType for parameters`() {
-        val expectedResult = ClassName("kotlin.collections", "List")
-            .plusParameter(
-                ClassName("kotlin.collections", "List")
-                    .plusParameter(Integer::class.asClassName()),
-            )
+        val expectedResult =
+            ClassName("kotlin.collections", "List")
+                .plusParameter(
+                    ClassName("kotlin.collections", "List")
+                        .plusParameter(Integer::class.asClassName()),
+                )
         val actualResult = "int[10][20]".mapType()
 
         assertThat(actualResult).isEqualTo(expectedResult)
@@ -39,12 +39,13 @@ class SolidityUtilsTest {
 
     @Test
     fun `toNativeArrayType for returns`() {
-        val expectedResult = ClassName("org.web3j.openapi.core.models", "ResultModel")
-            .parameterizedBy(
-                ClassName("kotlin.collections", "List")
-                    .plusParameter(ANY.copy(true))
-                    .copy(true),
-            )
+        val expectedResult =
+            ClassName("org.web3j.openapi.core.models", "ResultModel")
+                .parameterizedBy(
+                    ClassName("kotlin.collections", "List")
+                        .plusParameter(ANY.copy(true))
+                        .copy(true),
+                )
 
         val actualResult = "int[10][20]".mapType(false)
 
@@ -53,13 +54,15 @@ class SolidityUtilsTest {
 
     @Test
     fun `getFunctionReturnType for ResultModel`() {
-        val expectedResult = ClassName("org.web3j.openapi.core.models", "ResultModel")
-            .parameterizedBy(String::class.asClassName())
+        val expectedResult =
+            ClassName("org.web3j.openapi.core.models", "ResultModel")
+                .parameterizedBy(String::class.asClassName())
 
-        val actualResult = AbiDefinition().apply {
-            outputs = listOf(NamedType("param1", "address"))
-            isConstant = true
-        }
+        val actualResult =
+            AbiDefinition().apply {
+                outputs = listOf(NamedType("param1", "address"))
+                isConstant = true
+            }
 
         assertThat(actualResult.getReturnType()).isEqualTo(expectedResult)
     }
@@ -68,34 +71,38 @@ class SolidityUtilsTest {
     fun `getFunctionReturnType for TransactionReceiptModel`() {
         val expectedResult = ClassName("org.web3j.openapi.core.models", "TransactionReceiptModel")
 
-        val actualResult = AbiDefinition().apply {
-            outputs = listOf(NamedType("param1", "address"))
-            isConstant = false
-        }
+        val actualResult =
+            AbiDefinition().apply {
+                outputs = listOf(NamedType("param1", "address"))
+                isConstant = false
+            }
 
         assertThat(actualResult.getReturnType()).isEqualTo(expectedResult)
     }
 
     @Test
     fun getMultipleFunctionReturnTypeTest() {
-        val expectedResult = ClassName("org.web3j.openapi.core.models", "ResultModel")
-            .parameterizedBy(
-                ClassName("org.web3j.tuples.generated", "Tuple2")
-                    .parameterizedBy(
-                        listOf(
-                            Integer::class.asClassName(),
-                            String::class.asClassName(),
+        val expectedResult =
+            ClassName("org.web3j.openapi.core.models", "ResultModel")
+                .parameterizedBy(
+                    ClassName("org.web3j.tuples.generated", "Tuple2")
+                        .parameterizedBy(
+                            listOf(
+                                Integer::class.asClassName(),
+                                String::class.asClassName(),
+                            ),
                         ),
-                    ),
-            )
+                )
 
-        val actualResult = AbiDefinition().apply {
-            outputs = listOf(
-                NamedType("param1", "int"),
-                NamedType("param2", "address"),
-            )
-            isConstant = true
-        }
+        val actualResult =
+            AbiDefinition().apply {
+                outputs =
+                    listOf(
+                        NamedType("param1", "int"),
+                        NamedType("param2", "address"),
+                    )
+                isConstant = true
+            }
 
         assertThat(actualResult.getReturnType()).isEqualTo(expectedResult)
     }

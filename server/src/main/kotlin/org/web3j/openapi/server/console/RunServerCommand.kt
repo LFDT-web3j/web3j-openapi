@@ -36,7 +36,6 @@ import kotlin.system.exitProcess
     version = ["1.0"], // TODO: Make version not hardcoded
 )
 class RunServerCommand : Callable<Int> {
-
     @Mixin
     private val consoleConfiguration = ConsoleConfiguration()
 
@@ -56,8 +55,8 @@ class RunServerCommand : Callable<Int> {
         }
     }
 
-    private fun serverConfig(): OpenApiServerConfig {
-        return OpenApiServerConfig(
+    private fun serverConfig(): OpenApiServerConfig =
+        OpenApiServerConfig(
             host = consoleConfiguration.serverOptions.host.hostName,
             port = consoleConfiguration.serverOptions.port,
             nodeEndpoint = consoleConfiguration.networkOptions.endpoint,
@@ -65,17 +64,17 @@ class RunServerCommand : Callable<Int> {
             walletFile = consoleConfiguration.credentialsOptions.walletOptions.walletFile,
             walletPassword = consoleConfiguration.credentialsOptions.walletOptions.walletPassword,
             projectName = consoleConfiguration.projectOptions.projectName,
-            contractAddresses = ContractAddresses().apply {
-                consoleConfiguration.contractAddresses?.let { contractAddresses ->
-                    putAll(
-                        contractAddresses
-                            .mapKeys { it.key.lowercase() }
-                            .mapValues { Address(it.value) },
-                    )
-                }
-            },
+            contractAddresses =
+                ContractAddresses().apply {
+                    consoleConfiguration.contractAddresses?.let { contractAddresses ->
+                        putAll(
+                            contractAddresses
+                                .mapKeys { it.key.lowercase() }
+                                .mapValues { Address(it.value) },
+                        )
+                    }
+                },
         )
-    }
 
     companion object {
         private val DEFAULT_FILE_PATH_WITHOUT_EXTENSION = "${System.getProperty("user.home")}/.epirus/web3j.openapi"
@@ -91,12 +90,16 @@ class RunServerCommand : Callable<Int> {
             runServerCommand.execute(*args).apply { exitProcess(this) }
         }
 
-        private fun configureDefaultProvider(args: Array<String>, commandLine: CommandLine) {
+        private fun configureDefaultProvider(
+            args: Array<String>,
+            commandLine: CommandLine,
+        ) {
             // First pass to get the configuration file
             val configFileCommand = ConfigFileCommand()
-            val configFileCommandLine = CommandLine(configFileCommand).apply {
-                parseArgs(*args.drop(1).toTypedArray())
-            }
+            val configFileCommandLine =
+                CommandLine(configFileCommand).apply {
+                    parseArgs(*args.drop(1).toTypedArray())
+                }
 
             if (configFileCommandLine.isUsageHelpRequested) {
                 commandLine.run {
@@ -110,8 +113,9 @@ class RunServerCommand : Callable<Int> {
                 }
             }
 
-            val configFile = configFileCommand.configFileOptions.configFile
-                ?: environment[CONFIG_FILE_ENV_NAME]?.run { File(this) }
+            val configFile =
+                configFileCommand.configFileOptions.configFile
+                    ?: environment[CONFIG_FILE_ENV_NAME]?.run { File(this) }
 
             val defaultProvidersList = mutableListOf<CommandLine.IDefaultValueProvider>()
             when (configFile?.extension) {

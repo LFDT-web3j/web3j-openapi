@@ -28,13 +28,15 @@ internal fun List<NamedType>.toDataClass(
     basePackageName: String = "",
     contractName: String = "",
 ): FileSpec {
-    val outputFile = FileSpec.builder(
-        modelPackageName,
-        "${name.capitalize()}$type",
-    )
+    val outputFile =
+        FileSpec.builder(
+            modelPackageName,
+            "${name.capitalize()}$type",
+        )
 
-    val constructor = TypeSpec
-        .classBuilder("${name.capitalize()}$type")
+    val constructor =
+        TypeSpec
+            .classBuilder("${name.capitalize()}$type")
 
     // FIXME: Events with no parameters require no field class
     if (isNotEmpty()) constructor.addModifiers(KModifier.DATA)
@@ -55,16 +57,17 @@ internal fun List<NamedType>.toDataClass(
             inputType,
         )
         constructor.addProperty(
-            PropertySpec.builder(
-                inputName,
-                inputType,
-            ).initializer(inputName)
+            PropertySpec
+                .builder(
+                    inputName,
+                    inputType,
+                ).initializer(inputName)
                 .addAnnotation(
-                    AnnotationSpec.builder(JsonProperty::class.java)
+                    AnnotationSpec
+                        .builder(JsonProperty::class.java)
                         .addMember("value = %S", inputName)
                         .build(),
-                )
-                .build(),
+                ).build(),
         )
     }
     constructor.primaryConstructor(constructorBuilder.build())

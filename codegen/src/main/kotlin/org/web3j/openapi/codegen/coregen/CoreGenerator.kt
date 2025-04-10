@@ -28,8 +28,8 @@ import java.nio.file.Paths
 class CoreGenerator(
     configuration: GeneratorConfiguration,
 ) : AbstractGenerator(
-    configuration,
-) {
+        configuration,
+    ) {
     init {
         context["contractsConfiguration"] = configuration.contracts
         context["apiImports"] = getApiImports()
@@ -48,10 +48,12 @@ class CoreGenerator(
             logger.debug("Generating ${it.contractDetails.capitalizedContractName} Open API folders and files")
             CoreApiGenerator(
                 configuration.packageName,
-                folderPath = Paths.get(
-                    folderPath,
-                    it.contractDetails.lowerCaseContractName,
-                ).toString(),
+                folderPath =
+                    Paths
+                        .get(
+                            folderPath,
+                            it.contractDetails.lowerCaseContractName,
+                        ).toString(),
                 contractDetails = it.contractDetails,
             ).generate()
         }
@@ -78,11 +80,12 @@ class CoreGenerator(
         }
     }
 
-    private fun getApiImports(): List<Import> {
-        return configuration.contracts.map {
-            Import("import ${configuration.packageName}.core.${it.contractDetails.lowerCaseContractName}.${it.contractDetails.capitalizedContractName}")
+    private fun getApiImports(): List<Import> =
+        configuration.contracts.map {
+            Import(
+                "import ${configuration.packageName}.core.${it.contractDetails.lowerCaseContractName}.${it.contractDetails.capitalizedContractName}",
+            )
         }
-    }
 
     private fun copySources(folderPath: String) {
         generateFromTemplate(

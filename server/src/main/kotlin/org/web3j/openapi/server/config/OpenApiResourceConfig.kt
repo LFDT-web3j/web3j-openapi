@@ -56,8 +56,7 @@ import java.util.logging.Logger
 class OpenApiResourceConfig(
     serverConfig: OpenApiServerConfig,
 ) : ResourceConfig() {
-
-//    /**
+    //    /**
 //     * Used mainly for testing.
 //     *
 //     * The given Web3j, transaction manager and gas provider instances
@@ -74,12 +73,13 @@ class OpenApiResourceConfig(
 //        property(Properties.TRANSACTION_MANAGER, transactionManager)
 //    }
 
-    private val mapper = jacksonObjectMapper()
-        .setDefaultSetterInfo(JsonSetter.Value.forContentNulls(Nulls.AS_EMPTY))
-        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-        .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
-        .enable(SerializationFeature.INDENT_OUTPUT)
+    private val mapper =
+        jacksonObjectMapper()
+            .setDefaultSetterInfo(JsonSetter.Value.forContentNulls(Nulls.AS_EMPTY))
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
+            .enable(SerializationFeature.INDENT_OUTPUT)
 
     init {
         // Register all Web3j OpenAPI resources in the classpath
@@ -112,13 +112,17 @@ class OpenApiResourceConfig(
     private class InjectionBinder : AbstractBinder() {
         override fun configure() {
             bindFactory(Web3jFactory::class.java)
-                .to(Web3j::class.java).`in`(Singleton::class.java)
+                .to(Web3j::class.java)
+                .`in`(Singleton::class.java)
             bindFactory(CredentialsFactory::class.java)
-                .to(Credentials::class.java).`in`(Singleton::class.java)
+                .to(Credentials::class.java)
+                .`in`(Singleton::class.java)
             bindFactory(ContractGasProviderFactory::class.java)
-                .to(ContractGasProvider::class.java).`in`(Singleton::class.java)
+                .to(ContractGasProvider::class.java)
+                .`in`(Singleton::class.java)
             bindFactory(ContractAddressesFactory::class.java)
-                .to(ContractAddresses::class.java).`in`(Singleton::class.java)
+                .to(ContractAddresses::class.java)
+                .`in`(Singleton::class.java)
         }
     }
 
