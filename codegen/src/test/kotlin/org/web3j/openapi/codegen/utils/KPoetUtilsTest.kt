@@ -21,13 +21,13 @@ import java.io.File
 import java.nio.file.Paths
 
 class KPoetUtilsTest {
-
     @TempDir
     lateinit var tempFolder: File
 
     @Test
     fun inputsToDataClassTest() {
-        val expectedOutput = """
+        val expectedOutput =
+            """
             package test
 
             import com.fasterxml.jackson.`annotation`.JsonProperty
@@ -42,23 +42,27 @@ class KPoetUtilsTest {
             )
             """.replace("\\s".toRegex(), "")
 
-        val namedTypes = listOf(
-            NamedType("number", "uint256"),
-            NamedType("string", "string"),
-        )
-        namedTypes.toDataClass(
-            "test",
-            "testFunction",
-            "Parameters",
-        ).writeTo(tempFolder)
-
-        val actualOutput = File(
-            Paths.get(
-                tempFolder.absolutePath,
+        val namedTypes =
+            listOf(
+                NamedType("number", "uint256"),
+                NamedType("string", "string"),
+            )
+        namedTypes
+            .toDataClass(
                 "test",
-                "TestFunctionParameters.kt",
-            ).toString(),
-        ).readText().replace("\\s".toRegex(), "")
+                "testFunction",
+                "Parameters",
+            ).writeTo(tempFolder)
+
+        val actualOutput =
+            File(
+                Paths
+                    .get(
+                        tempFolder.absolutePath,
+                        "test",
+                        "TestFunctionParameters.kt",
+                    ).toString(),
+            ).readText().replace("\\s".toRegex(), "")
 
         assertThat(actualOutput).isEqualTo(expectedOutput)
     }

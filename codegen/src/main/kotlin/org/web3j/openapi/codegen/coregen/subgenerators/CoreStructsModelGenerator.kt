@@ -24,13 +24,14 @@ class CoreStructsModelGenerator(
     val components: List<AbiDefinition.NamedType>,
 ) {
     fun generate() {
-        val functionFile = components.toDataClass(
-            "$packageName.core.${contractName.lowercase()}.model",
-            functionName,
-            "StructModel",
-            packageName,
-            contractName,
-        )
+        val functionFile =
+            components.toDataClass(
+                "$packageName.core.${contractName.lowercase()}.model",
+                functionName,
+                "StructModel",
+                packageName,
+                contractName,
+            )
         CoreFunctionsModelGenerator.logger.debug("Generating $contractName $functionName parameters")
         functionFile.writeTo(File(folderPath))
     }

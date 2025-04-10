@@ -34,7 +34,6 @@ import java.io.File
 class Web3jFactory(
     @Context private val configuration: Configuration,
 ) : Factory<Web3j> {
-
     override fun provide(): Web3j {
         val nodeAddress = configuration.getProperty(NODE_ADDRESS)?.toString()
         return Web3j.build(HttpService(nodeAddress))
@@ -45,8 +44,8 @@ class Web3jFactory(
 
 class CredentialsFactory(
     @Context private val configuration: Configuration,
-) : Factory<Credentials>, KLogging() {
-
+) : KLogging(),
+    Factory<Credentials> {
     override fun provide(): Credentials {
         val privateKey = configuration.getProperty(PRIVATE_KEY)?.toString()
         val walletFilePath = configuration.getProperty(WALLET_FILE)?.toString()
@@ -76,10 +75,7 @@ class CredentialsFactory(
 class ContractGasProviderFactory(
     @Context private val configuration: Configuration,
 ) : Factory<ContractGasProvider> {
-
-    override fun provide(): ContractGasProvider {
-        return DefaultGasProvider()
-    }
+    override fun provide(): ContractGasProvider = DefaultGasProvider()
 
     override fun dispose(gasProvider: ContractGasProvider) {
     }
@@ -89,10 +85,7 @@ class ContractGasProviderFactory(
 class ContractAddressesFactory(
     @Context private val configuration: Configuration,
 ) : Factory<ContractAddresses> {
-
-    override fun provide(): ContractAddresses {
-        return configuration.getProperty(CONTRACT_ADDRESSES) as ContractAddresses
-    }
+    override fun provide(): ContractAddresses = configuration.getProperty(CONTRACT_ADDRESSES) as ContractAddresses
 
     override fun dispose(addresses: ContractAddresses) {
     }

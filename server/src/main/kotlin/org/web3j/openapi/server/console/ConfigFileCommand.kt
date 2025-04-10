@@ -24,7 +24,6 @@ import picocli.CommandLine.Unmatched
     mixinStandardHelpOptions = true,
 )
 class ConfigFileCommand {
-
     @Mixin
     internal val configFileOptions = ConfigFileOptions()
 

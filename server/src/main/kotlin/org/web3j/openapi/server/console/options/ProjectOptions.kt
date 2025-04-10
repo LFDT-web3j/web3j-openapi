@@ -15,7 +15,6 @@ package org.web3j.openapi.server.console.options
 import picocli.CommandLine.Option
 
 class ProjectOptions {
-
     @Option(
         names = ["-n", "--name"],
         description = ["specify the project name."],

@@ -35,16 +35,17 @@ class LifecycleImplGenerator(
                 .map { it.inputs }
                 .first()
                 .forEach { input ->
-                    parameters += if (input.type == "tuple") {
-                        ", ${getStructCallParameters(
-                            contractDetails.contractName,
-                            input,
-                            "",
-                            "parameters.${input.name}",
-                        )}"
-                    } else {
-                        ", parameters.${input.name}"
-                    }
+                    parameters +=
+                        if (input.type == "tuple") {
+                            ", ${getStructCallParameters(
+                                contractDetails.contractName,
+                                input,
+                                "",
+                                "parameters.${input.name}",
+                            )}"
+                        } else {
+                            ", parameters.${input.name}"
+                        }
                 }
             parameters.removeSuffix(",")
         }

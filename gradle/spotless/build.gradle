@@ -38,8 +38,10 @@ spotless {
             include '**/*.kt'
             exclude '**/.gradle/**'
             exclude '**/build/install/**'
+            exclude '**/EnvironmentVariableDefaultProvider.kt'
+            exclude '**/SolidityFunctionWrapperGenerator.kt'
         }
-        ktlint('0.49.1')
+        ktlint('1.4.1')
         trimTrailingWhitespace()
         endWithNewline()
         licenseHeaderFile "$rootDir/gradle/spotless/java.license"

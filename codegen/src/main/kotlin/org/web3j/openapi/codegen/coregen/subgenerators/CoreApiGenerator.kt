@@ -66,8 +66,8 @@ internal class CoreApiGenerator(
         }
     }
 
-    private fun modelImports(): List<Import> {
-        return contractDetails.abiDefinitions
+    private fun modelImports(): List<Import> =
+        contractDetails.abiDefinitions
             .filter { it.type == "function" && it.inputs.isNotEmpty() || it.type == "event" }
             .map {
                 if (it.type == "function") {
@@ -84,10 +84,9 @@ internal class CoreApiGenerator(
                     )
                 }
             }
-    }
 
-    private fun eventImports(): List<Import> {
-        return contractDetails.abiDefinitions
+    private fun eventImports(): List<Import> =
+        contractDetails.abiDefinitions
             .filter { it.type == "event" }
             .map {
                 Import(
@@ -96,7 +95,6 @@ internal class CoreApiGenerator(
                     }EventResource",
                 )
             }
-    }
 
     private fun contractResources(): ContractResources {
         val functionResources = mutableListOf<FunctionResource>()
@@ -123,8 +121,10 @@ internal class CoreApiGenerator(
                             functionName = sanitizedAbiDefinitionName,
                             resource = "fun $sanitizedAbiDefinitionName($parameters)",
                             method = if (it.inputs.isEmpty()) "@GET" else "@POST",
-                            returnType = it.getReturnType(packageName, contractDetails.lowerCaseContractName)
-                                .toString(),
+                            returnType =
+                                it
+                                    .getReturnType(packageName, contractDetails.lowerCaseContractName)
+                                    .toString(),
                             operationTag = operationTag,
                             mediaType = "@Produces(MediaType.APPLICATION_JSON)",
                             path = "@Path(\"$sanitizedAbiDefinitionName\")",
@@ -203,12 +203,14 @@ internal class CoreApiGenerator(
             name = "${contractDetails.capitalizedContractName}Events.kt",
         )
 
-        val eventsFolder = File(
-            Paths.get(
-                folderPath,
-                "events",
-            ).toString(),
-        )
+        val eventsFolder =
+            File(
+                Paths
+                    .get(
+                        folderPath,
+                        "events",
+                    ).toString(),
+            )
 
         contractDetails.abiDefinitions
             .filter { it.type == "event" }

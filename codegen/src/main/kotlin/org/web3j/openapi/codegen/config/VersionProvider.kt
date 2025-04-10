@@ -19,28 +19,28 @@ import java.time.format.DateTimeFormatter
 import java.util.Properties
 
 object VersionProvider {
-
     val versionName: String
     val buildTimestamp: OffsetDateTime
 
     private val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS O")
 
     init {
-        val url = javaClass.classLoader.getResource("openapi-version.properties")
-            ?: throw IllegalStateException("No openapi-version.properties file found in the classpath.")
+        val url =
+            javaClass.classLoader.getResource("openapi-version.properties")
+                ?: throw IllegalStateException("No openapi-version.properties file found in the classpath.")
 
         val properties = Properties().apply { load(url.openStream()) }
 
         versionName = properties.getProperty("version")
-        buildTimestamp = properties.getProperty("timestamp").toLong().let {
-            Instant.ofEpochMilli(it).atOffset(ZoneOffset.UTC)
-        }
+        buildTimestamp =
+            properties.getProperty("timestamp").toLong().let {
+                Instant.ofEpochMilli(it).atOffset(ZoneOffset.UTC)
+            }
     }
 
-    fun getVersion(): Array<String> {
-        return arrayOf(
+    fun getVersion(): Array<String> =
+        arrayOf(
             "Version: $versionName",
             "Build timestamp: ${buildTimestamp.let { timeFormatter.format(it) }}",
         )
-    }
 }

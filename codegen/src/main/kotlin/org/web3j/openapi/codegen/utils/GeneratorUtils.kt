@@ -19,10 +19,9 @@ import java.io.File
 import java.lang.IllegalStateException
 
 object GeneratorUtils {
-
     @JvmStatic
-    fun loadContractConfigurations(abiList: List<File>): List<ContractConfiguration> {
-        return checkDuplicates(recurseIntoFolders(abiList, "abi")).map { abiFile ->
+    fun loadContractConfigurations(abiList: List<File>): List<ContractConfiguration> =
+        checkDuplicates(recurseIntoFolders(abiList, "abi")).map { abiFile ->
             ContractConfiguration(
                 abiFile,
                 ContractDetails(
@@ -31,21 +30,33 @@ object GeneratorUtils {
                 ),
             )
         }
-    }
 
-    private fun checkDuplicates(files: List<File>): List<File> {
-        return files.distinctBy { it.name }.also {
+    private fun checkDuplicates(files: List<File>): List<File> =
+        files.distinctBy { it.name }.also {
             if (it.size != files.size) throw IllegalStateException("Duplicate contracts names found!")
         }
-    }
 
-    private fun recurseIntoFolders(list: List<File>, extension: String): List<File> {
-        return list.flatMap { folder -> folder.walkTopDown().filter { it.extension == extension }.toList() }
-    }
+    private fun recurseIntoFolders(
+        list: List<File>,
+        extension: String,
+    ): List<File> =
+        list.flatMap { folder ->
+            folder
+                .walkTopDown()
+                .filter {
+                    it.extension == extension
+                }.toList()
+        }
 
-    internal fun argumentName(name: String?, index: Int): String = if (name.isNullOrEmpty()) "input$index" else name
+    internal fun argumentName(
+        name: String?,
+        index: Int,
+    ): String = if (name.isNullOrEmpty()) "input$index" else name
 
-    fun handleDuplicateNames(abiDefinitions: List<AbiDefinition>, type: String): List<AbiDefinition> {
+    fun handleDuplicateNames(
+        abiDefinitions: List<AbiDefinition>,
+        type: String,
+    ): List<AbiDefinition> {
         val distinctAbis = mutableMapOf<String, AbiDefinition>()
         abiDefinitions.forEach { abiDefinition ->
             if (abiDefinition.type == type) {
@@ -70,11 +81,12 @@ object GeneratorUtils {
         val distinctInputs = mutableMapOf<String, AbiDefinition.NamedType>()
         inputs.forEachIndexed { index, namedType ->
             if (distinctInputs[argumentName(namedType.name, index).capitalize()] != null) {
-                inputs.first { input ->
-                    input.name == namedType.name
-                }.apply {
-                    this.name = "${this.name}Dup"
-                }
+                inputs
+                    .first { input ->
+                        input.name == namedType.name
+                    }.apply {
+                        this.name = "${this.name}Dup"
+                    }
             } else {
                 distinctInputs[argumentName(namedType.name, index).capitalize()] = namedType
             }
@@ -82,11 +94,10 @@ object GeneratorUtils {
         return inputs
     }
 
-    fun AbiDefinition.sanitizedName(wrapperCall: Boolean = false): String {
-        return when (true) {
+    fun AbiDefinition.sanitizedName(wrapperCall: Boolean = false): String =
+        when (true) {
             (name == null) -> "" // Case of a constructor
             wrapperCall -> name.substringBefore("&")
             else -> name.replace("&", "")
         }
-    }
 }

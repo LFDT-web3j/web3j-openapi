@@ -21,7 +21,6 @@ import org.web3j.openapi.codegen.utils.TemplateUtils.generateFromTemplate
 import java.io.File
 
 class TemplateUtilsTest {
-
     @TempDir
     lateinit var tempFolder: File
 
@@ -38,14 +37,15 @@ class TemplateUtilsTest {
     fun generateFromTemplateTest() {
         val expectedOutput = "test"
 
-        val actualOutput = generateFromTemplate(
-            mapOf("test" to "test"),
-            tempFolder.absolutePath,
-            "testTemplate.txt",
-            TemplateUtils.mustacheTemplate(
-                "testTemplate.mustache",
-            ),
-        ).readText().replace("\\s".toRegex(), "")
+        val actualOutput =
+            generateFromTemplate(
+                mapOf("test" to "test"),
+                tempFolder.absolutePath,
+                "testTemplate.txt",
+                TemplateUtils.mustacheTemplate(
+                    "testTemplate.mustache",
+                ),
+            ).readText().replace("\\s".toRegex(), "")
 
         assertThat(actualOutput).isEqualTo(expectedOutput)
     }

@@ -18,7 +18,6 @@ import picocli.CommandLine.Model.ArgSpec
 internal class CascadingDefaultProvider(
     private vararg val defaultProviders: IDefaultValueProvider,
 ) : IDefaultValueProvider {
-
     override fun defaultValue(argSpec: ArgSpec): String? {
         for (defaultProvider in defaultProviders) {
             val value = defaultProvider.defaultValue(argSpec)

@@ -26,7 +26,6 @@ class EventsResourceImplGenerator(
     private val folderPath: String,
     private val abiDefinitions: List<AbiDefinition>,
 ) {
-
     private val context = mutableMapOf<String, Any>()
 
     init {
@@ -37,12 +36,14 @@ class EventsResourceImplGenerator(
     }
 
     fun generate() {
-        val eventsFolder = File(
-            Paths.get(
-                folderPath,
-                "events",
-            ).toString(),
-        )
+        val eventsFolder =
+            File(
+                Paths
+                    .get(
+                        folderPath,
+                        "events",
+                    ).toString(),
+            )
 
         abiDefinitions
             .filter { it.type == "event" }
@@ -63,25 +64,29 @@ class EventsResourceImplGenerator(
             }
     }
 
-    private fun getEventResponseParameters(abiDef: AbiDefinition): String {
-        return abiDef.inputs.joinToString(",") {
+    private fun getEventResponseParameters(abiDef: AbiDefinition): String =
+        abiDef.inputs.joinToString(",") {
             if (it.components.isEmpty()) {
                 "it.${it.name}"
             } else {
                 getStructEventParameters(it, abiDef.sanitizedName(), "it.${it.name}")
             }
         }
-    }
 
-    private fun getStructEventParameters(input: AbiDefinition.NamedType, functionName: String, callTree: String = ""): String {
+    private fun getStructEventParameters(
+        input: AbiDefinition.NamedType,
+        functionName: String,
+        callTree: String = "",
+    ): String {
         val structName = input.internalType.structName
-        val parameters = input.components.joinToString(",") { component ->
-            if (component.components.isNullOrEmpty()) {
-                "$callTree.${component.name}"
-            } else {
-                getStructEventParameters(component, functionName.decapitalize(), "$callTree.${component.name}".removeSuffix("."))
+        val parameters =
+            input.components.joinToString(",") { component ->
+                if (component.components.isNullOrEmpty()) {
+                    "$callTree.${component.name}"
+                } else {
+                    getStructEventParameters(component, functionName.decapitalize(), "$callTree.${component.name}".removeSuffix("."))
+                }
             }
-        }
         return "$packageName.core.${contractName.lowercase()}.model.${structName}StructModel($parameters)"
     }
 }

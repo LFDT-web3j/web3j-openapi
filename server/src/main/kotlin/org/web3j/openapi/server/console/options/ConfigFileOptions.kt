@@ -16,7 +16,6 @@ import picocli.CommandLine.Option
 import java.io.File
 
 class ConfigFileOptions {
-
     @Option(
         names = ["-c", "--config-file"],
         paramLabel = "<FILENAME>",

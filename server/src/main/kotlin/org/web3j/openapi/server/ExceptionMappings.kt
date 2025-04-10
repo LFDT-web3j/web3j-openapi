@@ -31,7 +31,6 @@ import org.web3j.tx.exceptions.ContractCallException
 sealed class BaseExceptionMapper<E : Throwable>(
     private val status: Response.StatusType,
 ) : ExceptionMapper<E> {
-
     @Context
     private lateinit var uriInfo: UriInfo
 
@@ -39,33 +38,41 @@ sealed class BaseExceptionMapper<E : Throwable>(
     private lateinit var request: HttpServletRequest
 
     override fun toResponse(exception: E): Response {
-        val error = ErrorResponse(
-            title = exception.message ?: status.reasonPhrase,
-            userAgent = request.getHeader(HttpHeaders.USER_AGENT),
-            responseStatus = status.statusCode,
-            requestMethod = request.method,
-            requestUrl = uriInfo.requestUri.toString(),
-        )
+        val error =
+            ErrorResponse(
+                title = exception.message ?: status.reasonPhrase,
+                userAgent = request.getHeader(HttpHeaders.USER_AGENT),
+                responseStatus = status.statusCode,
+                requestMethod = request.method,
+                requestUrl = uriInfo.requestUri.toString(),
+            )
 
         return Response.status(status.statusCode).entity(error).build()
     }
 }
 
 class JsonMappingExceptionMapper : BaseExceptionMapper<JsonMappingException>(Status.BAD_REQUEST)
+
 class JsonParseExceptionMapper : BaseExceptionMapper<JsonParseException>(Status.BAD_REQUEST)
+
 class TransactionExceptionMapper : BaseExceptionMapper<TransactionException>(Status.BAD_REQUEST)
+
 class UnsupportedOperationExceptionMapper : BaseExceptionMapper<UnsupportedOperationException>(Status.BAD_REQUEST)
+
 class IllegalArgumentExceptionMapper : BaseExceptionMapper<IllegalArgumentException>(CustomStatus.UNPROCESSABLE_ENTITY)
+
 class ContractCallExceptionMapper : BaseExceptionMapper<ContractCallException>(CustomStatus.UNPROCESSABLE_ENTITY)
+
 class IllegalStateExceptionMapper : BaseExceptionMapper<IllegalStateException>(CustomStatus.UNPROCESSABLE_ENTITY)
+
 class RuntimeExceptionMapper : BaseExceptionMapper<RuntimeException>(Status.INTERNAL_SERVER_ERROR)
+
 class NotFoundExceptionMapper : BaseExceptionMapper<NotFoundException>(Status.NOT_FOUND)
 
 enum class CustomStatus(
     private val _statusCode: Int,
     private val _reasonPhrase: String,
 ) : Response.StatusType {
-
     UNPROCESSABLE_ENTITY(
         HttpStatus.Code.UNPROCESSABLE_ENTITY.code,
         HttpStatus.Code.UNPROCESSABLE_ENTITY.message,
@@ -73,6 +80,8 @@ enum class CustomStatus(
     ;
 
     override fun getStatusCode(): Int = _statusCode
+
     override fun getFamily(): Family = Family.familyOf(_statusCode)
+
     override fun getReasonPhrase(): String = _reasonPhrase
 }

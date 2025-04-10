@@ -25,13 +25,14 @@ internal class CoreFunctionsModelGenerator(
     val inputs: List<NamedType>,
 ) {
     fun generate() {
-        val functionFile = inputs.toDataClass(
-            "$packageName.core.${contractName.lowercase()}.model",
-            functionName,
-            "Parameters",
-            packageName,
-            contractName,
-        )
+        val functionFile =
+            inputs.toDataClass(
+                "$packageName.core.${contractName.lowercase()}.model",
+                functionName,
+                "Parameters",
+                packageName,
+                contractName,
+            )
         logger.debug("Generating $contractName $functionName parameters")
         functionFile.writeTo(File(folderPath))
     }

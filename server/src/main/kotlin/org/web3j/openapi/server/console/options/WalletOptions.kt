@@ -16,7 +16,6 @@ import picocli.CommandLine.Option
 import java.io.File
 
 class WalletOptions {
-
     @Option(
         names = ["--wallet-path"],
         description = ["specify the wallet file path"],

@@ -24,7 +24,6 @@ abstract class FunctionWrapperGenerator(
     open val useJavaNativeTypes: Boolean,
     open val useJavaPrimitiveTypes: Boolean,
 ) {
-
     @Throws(IOException::class, ClassNotFoundException::class)
     abstract fun generate()
 
@@ -32,7 +31,11 @@ abstract class FunctionWrapperGenerator(
         const val JAVA_TYPES_ARG = "--javaTypes"
         const val SOLIDITY_TYPES_ARG = "--solidityTypes"
         const val PRIMITIVE_TYPES_ARG = "--primitiveTypes"
-        fun useJavaNativeTypes(argVal: String, usageString: String?): Boolean {
+
+        fun useJavaNativeTypes(
+            argVal: String,
+            usageString: String?,
+        ): Boolean {
             var useJavaNativeTypes = true
             if (SOLIDITY_TYPES_ARG == argVal) {
                 useJavaNativeTypes = false
@@ -44,15 +47,20 @@ abstract class FunctionWrapperGenerator(
             return useJavaNativeTypes
         }
 
-        fun parsePositionalArg(args: Array<String?>?, idx: Int): String? {
-            return if (args != null && args.size > idx) {
+        fun parsePositionalArg(
+            args: Array<String?>?,
+            idx: Int,
+        ): String? =
+            if (args != null && args.size > idx) {
                 args[idx]
             } else {
                 ""
             }
-        }
 
-        fun parseParameterArgument(args: Array<String>, vararg parameters: String): String {
+        fun parseParameterArgument(
+            args: Array<String>,
+            vararg parameters: String,
+        ): String {
             for (parameter in parameters) {
                 for (i in args.indices) {
                     if (args[i] == parameter && i + 1 < args.size) {

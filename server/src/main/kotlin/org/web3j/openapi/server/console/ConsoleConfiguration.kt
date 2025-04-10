@@ -23,7 +23,6 @@ import picocli.CommandLine.Mixin
 import picocli.CommandLine.Option
 
 class ConsoleConfiguration {
-
     @Mixin
     @JsonProperty("credentials")
     val credentialsOptions = CredentialsOptions()
