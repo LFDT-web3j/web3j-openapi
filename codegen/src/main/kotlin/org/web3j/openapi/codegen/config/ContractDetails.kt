@@ -28,7 +28,7 @@ data class ContractDetails(
     }
 
     val lowerCaseContractName: String
-        get() = contractName.toLowerCase()
+        get() = contractName.lowercase()
 
     val capitalizedContractName: String
         get() = contractName.capitalize()

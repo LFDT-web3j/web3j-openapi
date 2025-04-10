@@ -28,27 +28,30 @@ import org.slf4j.bridge.SLF4JBridgeHandler
 import java.util.logging.Level
 import java.util.logging.Logger
 
-class ClientService @JvmOverloads constructor(
+class ClientService
+@JvmOverloads
+constructor(
     val uri: String,
     readTimeout: Int = DEFAULT_READ_TIMEOUT,
     connectTimeout: Int = DEFAULT_CONNECT_TIMEOUT,
 ) : AutoCloseable {
-
-    private val mapper = jacksonObjectMapper()
-        .setDefaultSetterInfo(JsonSetter.Value.forContentNulls(Nulls.AS_EMPTY))
-        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-        .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
-        .enable(SerializationFeature.INDENT_OUTPUT)
+    private val mapper =
+        jacksonObjectMapper()
+            .setDefaultSetterInfo(JsonSetter.Value.forContentNulls(Nulls.AS_EMPTY))
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
+            .enable(SerializationFeature.INDENT_OUTPUT)
 
     internal val client: Client by lazy {
-        val config = ClientConfig().apply {
-            // Redirect ALL logs to SLF4J using logging.properties
-            register(LoggingFeature(logger.apply { level = Level.ALL }, Short.MAX_VALUE.toInt()))
-            register(JacksonJaxbJsonProvider(mapper, arrayOf(Annotations.JACKSON)))
-            property(ClientProperties.READ_TIMEOUT, readTimeout)
-            property(ClientProperties.CONNECT_TIMEOUT, connectTimeout)
-        }
+        val config =
+            ClientConfig().apply {
+                // Redirect ALL logs to SLF4J using logging.properties
+                register(LoggingFeature(logger.apply { level = Level.ALL }, Short.MAX_VALUE.toInt()))
+                register(JacksonJaxbJsonProvider(mapper, arrayOf(Annotations.JACKSON)))
+                property(ClientProperties.READ_TIMEOUT, readTimeout)
+                property(ClientProperties.CONNECT_TIMEOUT, connectTimeout)
+            }
         ClientBuilder.newClient(config)
     }
 

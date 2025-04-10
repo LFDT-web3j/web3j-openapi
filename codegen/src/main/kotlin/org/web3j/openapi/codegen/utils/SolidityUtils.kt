@@ -51,17 +51,17 @@ internal fun String.mapType(isParameter: Boolean = true, structName: String = ""
         getParameterMapping(isParameter, ByteArray::class.asTypeName())
     } else if (this == "bool" || this == "boolean") {
         getParameterMapping(isParameter, Boolean::class.asTypeName())
-    } else if (toLowerCase() == "float") {
+    } else if (lowercase() == "float") {
         getParameterMapping(isParameter, Float::class.asTypeName())
-    } else if (toLowerCase() == "double") {
+    } else if (lowercase() == "double") {
         getParameterMapping(isParameter, Double::class.asTypeName())
-    } else if (toLowerCase() == "short") {
+    } else if (lowercase() == "short") {
         getParameterMapping(isParameter, Short::class.asTypeName())
-    } else if (toLowerCase() == "long") {
+    } else if (lowercase() == "long") {
         getParameterMapping(isParameter, Long::class.asTypeName())
-    } else if (toLowerCase() == "char") {
+    } else if (lowercase() == "char") {
         getParameterMapping(isParameter, Character::class.asTypeName())
-    } else if (toLowerCase() == "tuple") {
+    } else if (lowercase() == "tuple") {
         getParameterMapping(isParameter, ClassName("$packageName.core.$contractName.model", "${structName}StructModel"))
     } else {
         throw UnsupportedOperationException(

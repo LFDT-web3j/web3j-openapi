@@ -45,7 +45,7 @@ internal fun List<NamedType>.toDataClass(
         val inputName = GeneratorUtils.argumentName(input.name, index)
         val inputType =
             when {
-                input.type == "tuple" -> input.type.mapType(true, input.internalType.structName, basePackageName, contractName.toLowerCase())
+                input.type == "tuple" -> input.type.mapType(true, input.internalType.structName, basePackageName, contractName.lowercase())
                 input.isIndexed -> input.type.mapIndexedType()
                 else -> input.type.mapType()
             }

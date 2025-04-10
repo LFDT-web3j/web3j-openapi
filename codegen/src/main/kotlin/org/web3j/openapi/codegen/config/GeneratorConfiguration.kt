@@ -26,9 +26,9 @@ data class GeneratorConfiguration @JvmOverloads constructor(
     val sanitizedProjectName: String = sanitizeName(projectName),
     val withImplementations: Boolean = true,
 ) {
-    val rootProjectName = sanitizedProjectName.toLowerCase().replace(' ', '-')
+    val rootProjectName = sanitizedProjectName.lowercase().replace(' ', '-')
 
     init {
-        packageName = packageName.toLowerCase()
+        packageName = packageName.lowercase()
     }
 }

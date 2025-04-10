@@ -40,9 +40,12 @@ internal class ClientInvocationHandler(
     private val target: WebTarget,
     private val client: Any,
 ) : InvocationHandler {
-
-    override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any? {
-        return if (method.isEvent()) {
+    override fun invoke(
+        proxy: Any,
+        method: Method,
+        args: Array<out Any>?,
+    ): Any? =
+        if (method.isEvent()) {
             logger.debug { "Invoking event method: $method" }
             @Suppress("UNCHECKED_CAST")
             invokeOnEvent(args!![0] as Consumer<Any>)
@@ -50,7 +53,6 @@ internal class ClientInvocationHandler(
             logger.debug { "Invoking client method: $method" }
             invokeClient(method, args)
         }
-    }
 
     private fun <T> invokeOnEvent(onEvent: Consumer<T>): CompletableFuture<Void> {
         @Suppress("UNCHECKED_CAST")
@@ -61,7 +63,10 @@ internal class ClientInvocationHandler(
         }
     }
 
-    private fun invokeClient(method: Method, args: Array<out Any>?): Any {
+    private fun invokeClient(
+        method: Method,
+        args: Array<out Any>?,
+    ): Any {
         try {
             // Invoke the original method on the client
             return method.invoke(client, *(args ?: arrayOf())).let {
@@ -84,8 +89,11 @@ internal class ClientInvocationHandler(
         }
     }
 
-    private fun handleInvocationException(error: InvocationTargetException, method: Method): Throwable {
-        return error.targetException.let {
+    private fun handleInvocationException(
+        error: InvocationTargetException,
+        method: Method,
+    ): Throwable =
+        error.targetException.let {
             if (it is ClientErrorException) {
                 handleClientError(it, method)
             } else {
@@ -96,9 +104,11 @@ internal class ClientInvocationHandler(
                 error.targetException
             }
         }
-    }
 
-    private fun handleClientError(error: ClientErrorException, method: Method): RuntimeException {
+    private fun handleClientError(
+        error: ClientErrorException,
+        method: Method,
+    ): RuntimeException {
         logger.error {
             "Client exception while invoking method $method: " +
                 (error.message ?: error.response.statusInfo.reasonPhrase)
@@ -107,17 +117,20 @@ internal class ClientInvocationHandler(
     }
 
     private fun clientTarget(): WebTarget {
-        val resourcePath = client.toString()
-            .removePrefix("JerseyWebTarget { ")
-            .removeSuffix(" }")
-            .run { URL(this).path }
+        val resourcePath =
+            client
+                .toString()
+                .removePrefix("JerseyWebTarget { ")
+                .removeSuffix(" }")
+                .run { URL(this).path }
         return target.path(resourcePath)
     }
 
-    private fun Method.isEvent() = name == "onEvent" &&
-        parameterTypes.size == 1 &&
-        parameterTypes[0] == Consumer::class.java &&
-        returnType == CompletableFuture::class.java
+    private fun Method.isEvent() =
+        name == "onEvent" &&
+            parameterTypes.size == 1 &&
+            parameterTypes[0] == Consumer::class.java &&
+            returnType == CompletableFuture::class.java
 
     private val Any.typeArguments: List<Class<*>>
         get() {
@@ -141,6 +154,7 @@ internal class ClientInvocationHandler(
                 if (source.isOpen) source.close()
             }
         }
+
         fun open() {
             Thread {
                 source.open()

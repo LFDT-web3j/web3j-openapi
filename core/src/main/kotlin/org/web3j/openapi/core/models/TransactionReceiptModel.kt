@@ -54,8 +54,8 @@ data class TransactionReceiptModel(
     ) {
     }
 
-    fun toTransactionReceipt(): TransactionReceipt {
-        return TransactionReceipt(
+    fun toTransactionReceipt(): TransactionReceipt =
+        TransactionReceipt(
             this.transactionHash,
             this.transactionIndex.toString(16),
             this.blockHash,
@@ -86,5 +86,4 @@ data class TransactionReceiptModel(
             this.type,
             this.effectiveGasPrice,
         )
-    }
 }

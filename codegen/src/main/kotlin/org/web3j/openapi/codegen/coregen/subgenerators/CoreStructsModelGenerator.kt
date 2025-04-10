@@ -25,7 +25,7 @@ class CoreStructsModelGenerator(
 ) {
     fun generate() {
         val functionFile = components.toDataClass(
-            "$packageName.core.${contractName.toLowerCase()}.model",
+            "$packageName.core.${contractName.lowercase()}.model",
             functionName,
             "StructModel",
             packageName,

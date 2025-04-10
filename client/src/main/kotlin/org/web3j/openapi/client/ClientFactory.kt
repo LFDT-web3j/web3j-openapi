@@ -17,13 +17,16 @@ import org.web3j.openapi.core.Web3jOpenApi
 import java.lang.reflect.Proxy
 
 object ClientFactory {
-
     /**
      * Builds a JAX-RS client with the given type [T] and service.
      */
     @JvmStatic
     @JvmOverloads
-    fun <T : Web3jOpenApi> create(type: Class<T>, service: ClientService, token: String? = null): T {
+    fun <T : Web3jOpenApi> create(
+        type: Class<T>,
+        service: ClientService,
+        token: String? = null,
+    ): T {
         require(type.isInterface) { "Client class must be an interface" }
 
         val target = service.client.target(service.uri)

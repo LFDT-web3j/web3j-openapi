@@ -23,7 +23,6 @@ import jakarta.ws.rs.core.MediaType
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 interface Web3jOpenApi {
-
     /**
      * Generated applications override this property
      * to add a custom resource containing all contract types.
