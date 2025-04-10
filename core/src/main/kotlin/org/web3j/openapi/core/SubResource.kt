@@ -22,7 +22,6 @@ import jakarta.ws.rs.core.MediaType
  * Subclasses may define additional values as JAX-RS sub-resources.
  */
 interface SubResource {
-
     /**
      * Lists all available sub-resources.
      */

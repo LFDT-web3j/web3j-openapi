@@ -33,7 +33,7 @@ class EventsResourceImplGenerator(
         context["packageName"] = packageName
         context["contractName"] = contractName.decapitalize()
         context["contractNameCap"] = contractName.capitalize()
-        context["lowerCaseContractName"] = contractName.toLowerCase()
+        context["lowerCaseContractName"] = contractName.lowercase()
     }
 
     fun generate() {
@@ -51,7 +51,7 @@ class EventsResourceImplGenerator(
                 val sanitizedAbiDefinitionName = abiDefinition.sanitizedName()
                 context["eventNameCap"] = sanitizedAbiDefinitionName.capitalize()
                 context["eventName"] = sanitizedAbiDefinitionName.decapitalize()
-                context["eventNameUp"] = sanitizedAbiDefinitionName.toUpperCase()
+                context["eventNameUp"] = sanitizedAbiDefinitionName.uppercase()
                 context["args"] = getEventResponseParameters(abiDefinition)
 
                 TemplateUtils.generateFromTemplate(
@@ -82,6 +82,6 @@ class EventsResourceImplGenerator(
                 getStructEventParameters(component, functionName.decapitalize(), "$callTree.${component.name}".removeSuffix("."))
             }
         }
-        return "$packageName.core.${contractName.toLowerCase()}.model.${structName}StructModel($parameters)"
+        return "$packageName.core.${contractName.lowercase()}.model.${structName}StructModel($parameters)"
     }
 }

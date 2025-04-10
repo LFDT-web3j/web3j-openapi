@@ -41,7 +41,7 @@ subprojects {
                 'spotless'
         ].each { buildScript ->
             download {
-                src "https://raw.githubusercontent.com/hyperledger-web3j/web3j-build-tools/main/gradle/$buildScript/build.gradle"
+                src "https://raw.githubusercontent.com/LFDT-web3j/web3j-build-tools/main/gradle/$buildScript/build.gradle"
                 dest "$rootDir/gradle/$buildScript/build.gradle"
                 overwrite false
                 quiet true
@@ -103,13 +103,13 @@ subprojects {
     }
 
     compileKotlin {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "21"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "21"
     }
 
-    sourceCompatibility = 17
+    sourceCompatibility = 21
 
     tasks.named("spotlessJava") {
         dependsOn(tasks.named("spotlessGroovyGradle"))

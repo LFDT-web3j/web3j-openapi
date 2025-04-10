@@ -26,7 +26,7 @@ internal class CoreFunctionsModelGenerator(
 ) {
     fun generate() {
         val functionFile = inputs.toDataClass(
-            "$packageName.core.${contractName.toLowerCase()}.model",
+            "$packageName.core.${contractName.lowercase()}.model",
             functionName,
             "Parameters",
             packageName,

@@ -26,7 +26,7 @@ internal class CoreEventsModelGenerator(
 ) {
     fun generate() {
         val functionFile = outputs.toDataClass(
-            "$packageName.core.${contractName.toLowerCase()}.model",
+            "$packageName.core.${contractName.lowercase()}.model",
             eventName,
             "EventResponse",
             packageName,

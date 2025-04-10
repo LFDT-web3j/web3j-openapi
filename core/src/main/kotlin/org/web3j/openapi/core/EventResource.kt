@@ -22,7 +22,6 @@ import java.util.function.Consumer
  * @param T the event return type.
  */
 interface EventResource<T> {
-
     /**
      * Contract event client-side subscription for this event resource.
      * This method is handled by a SSE endpoint on the server side.

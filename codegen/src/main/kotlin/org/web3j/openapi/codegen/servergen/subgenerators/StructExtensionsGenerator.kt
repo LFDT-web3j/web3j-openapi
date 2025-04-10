@@ -41,7 +41,7 @@ class StructExtensionsGenerator(
 
     private fun generateExtensions(structs: List<AbiDefinition.NamedType?>): FileSpec {
         val extensionsFile = FileSpec.builder(
-            "$packageName.server.${contractName.toLowerCase()}",
+            "$packageName.server.${contractName.lowercase()}",
             "${contractName.capitalize()}Extensions",
         )
 
@@ -54,7 +54,7 @@ class StructExtensionsGenerator(
             )
 
             val modelClass = ClassName(
-                "$packageName.core.${contractName.toLowerCase()}.model",
+                "$packageName.core.${contractName.lowercase()}.model",
                 "${structName}StructModel",
             )
 

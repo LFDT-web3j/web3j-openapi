@@ -50,7 +50,7 @@ internal class ResourcesImplGenerator(
 
     private fun generateClass(): FileSpec {
         val resourcesFile = FileSpec.builder(
-            "$packageName.server.${contractName.toLowerCase()}",
+            "$packageName.server.${contractName.lowercase()}",
             "${contractName.capitalize()}ResourceImpl",
         )
 
@@ -73,12 +73,12 @@ internal class ResourcesImplGenerator(
             )
 
         val contractResourceClass = ClassName(
-            "$packageName.core.${contractName.toLowerCase()}",
+            "$packageName.core.${contractName.lowercase()}",
             "${contractName.capitalize()}Resource",
         )
 
         val eventsResourcesClass = ClassName(
-            "$packageName.core.${contractName.toLowerCase()}",
+            "$packageName.core.${contractName.lowercase()}",
             "${contractName.capitalize()}Events",
         )
 
@@ -125,7 +125,7 @@ internal class ResourcesImplGenerator(
             .forEach {
                 val sanitizedAbiDefinitionName = it.sanitizedName()
                 if (!it.isTransactional() && it.outputs.isEmpty()) return@forEach
-                val returnType = it.getReturnType(packageName, contractName.toLowerCase())
+                val returnType = it.getReturnType(packageName, contractName.lowercase())
                 val funSpec = FunSpec.builder(sanitizedAbiDefinitionName)
                     .returns(returnType)
                     .addModifiers(KModifier.OVERRIDE)
@@ -133,7 +133,7 @@ internal class ResourcesImplGenerator(
                     "${contractName.decapitalize()}.${it.sanitizedName(true)}().send()"
                 } else {
                     val nameClass = ClassName(
-                        "$packageName.core.${contractName.toLowerCase()}.model",
+                        "$packageName.core.${contractName.lowercase()}.model",
                         "${sanitizedAbiDefinitionName.capitalize()}Parameters",
                     )
                     funSpec.addParameter(
@@ -220,7 +220,7 @@ internal class ResourcesImplGenerator(
             .filter { it.type == "event" }
             .map { abiDefinition ->
                 Import(
-                    "import $packageName.server.${contractName.toLowerCase()}.events.${abiDefinition.name.capitalize()}EventResourceImpl",
+                    "import $packageName.server.${contractName.lowercase()}.events.${abiDefinition.name.capitalize()}EventResourceImpl",
                 )
             }
     }
@@ -239,7 +239,7 @@ internal class ResourcesImplGenerator(
         val context = mutableMapOf<String, Any>()
 
         context["packageName"] = packageName
-        context["lowerCaseContractName"] = contractName.toLowerCase()
+        context["lowerCaseContractName"] = contractName.lowercase()
         context["decapitalizedContractName"] = contractName.decapitalize()
         context["capitalizedContractName"] = contractName.capitalize()
         context["EventResource"] = eventsResources()
@@ -250,7 +250,7 @@ internal class ResourcesImplGenerator(
                 folderPath,
                 packageName.replace(".", "/"),
                 "server",
-                contractName.toLowerCase(),
+                contractName.lowercase(),
             ).toString(),
         ).apply {
             mkdirs()

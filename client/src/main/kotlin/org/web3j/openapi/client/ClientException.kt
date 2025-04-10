@@ -23,10 +23,9 @@ class ClientException internal constructor(
     val error: ErrorResponse?,
 ) : RuntimeException(error?.title) {
     companion object {
-
         @JvmStatic
-        fun of(exception: ClientErrorException): ClientException {
-            return with(exception.response) {
+        fun of(exception: ClientErrorException): ClientException =
+            with(exception.response) {
                 if (hasEntity() && mediaType == MediaType.APPLICATION_JSON_TYPE) {
                     ClientException(readEntity(ErrorResponse::class.java))
                 } else {
@@ -39,6 +38,5 @@ class ClientException internal constructor(
                     )
                 }
             }
-        }
     }
 }
