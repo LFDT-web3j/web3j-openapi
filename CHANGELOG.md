@@ -7,7 +7,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-*
+* Remove legacy unstable oss.sonatype.org repositories to prevent 504 gateway timeouts during dependency resolution
 
 ### Features
 
