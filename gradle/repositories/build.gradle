@@ -3,8 +3,6 @@ repositories {
     maven {
         url = uri("https://plugins.gradle.org/m2/")
     }
-    jcenter()
-    maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
     maven { url "https://artifacts.consensys.net/public/maven/maven/" }
 }
